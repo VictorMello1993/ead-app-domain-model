@@ -1,0 +1,18 @@
+{
+    "extends": [
+        "standard"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "rules": {
+      "quotes": [2, "double", {"avoidEscape": true}],
+      "semi": [2, "always"],
+      "space-before-function-paren": "off",
+      "camelcase": "off",
+      "no-useless-constructor": "off",
+      "no-undef": "off",
+      "no-new": "warn",
+      "no-unused-vars": "off",
+      "no-useless-escape": "off",
+      "no-use-before-define": "off"
+    }
+}
