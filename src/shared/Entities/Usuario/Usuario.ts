@@ -1,7 +1,7 @@
 import { Entidade, EntidadeProps } from "@/shared/Entities/Entidade";
 import { NomePessoaVO } from "@/shared/ValueObject/NomePessoaVO";
 import { EmailVO } from "@/shared/ValueObject/EmailVO";
-import SenhaVO from "@/shared/ValueObject/SenhaVO";
+import { SenhaHashVO } from "@/shared/ValueObject/SenhaHashVO";
 
 export interface UsuarioProps extends EntidadeProps{
   nome?: string
@@ -12,7 +12,7 @@ export interface UsuarioProps extends EntidadeProps{
 export class Usuario extends Entidade<Usuario, UsuarioProps> {
   readonly nome: NomePessoaVO;
   readonly email: EmailVO;
-  readonly senha?: SenhaVO;
+  readonly senha?: SenhaHashVO;
 
   constructor(props: UsuarioProps) {
     super(props);
@@ -20,7 +20,7 @@ export class Usuario extends Entidade<Usuario, UsuarioProps> {
     this.email = new EmailVO(props.email);
 
     if (props.senha) {
-      this.senha = new SenhaVO(props.senha);
+      this.senha = new SenhaHashVO(props.senha);
     }
   }
 }

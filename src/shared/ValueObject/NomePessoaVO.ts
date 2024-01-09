@@ -1,5 +1,5 @@
-import Erros from "../../constants/Erros";
-import { Validador } from "../../utils/Validador";
+import Erros from "@/constants/Erros";
+import { Validador } from "@/utils/Validador";
 
 export class NomePessoaVO {
   readonly nome: string;
