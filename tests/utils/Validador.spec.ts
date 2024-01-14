@@ -41,8 +41,18 @@ test("Deve retornar null com texto menor que o tamanho máximo", () => {
   expect(erro).toBeNull();
 });
 
+test("Deve retornar null com texto menor ou igual que o tamanho máximo", () => {
+  const erro = Validador.tamanhoMenorQueOuIgual("teste", 5, "erro");
+  expect(erro).toBeNull();
+});
+
 test("Deve retornar erro com texto maior que o tamanho máximo", () => {
   const erro = Validador.tamanhoMenorQue("Bom dia", 6, "erro");
+  expect(erro?.codigo).toBe("erro");
+});
+
+test("Deve retornar erro com texto maior ou igual que o tamanho máximo", () => {
+  const erro = Validador.tamanhoMenorQueOuIgual("Bom dia", 6, "erro");
   expect(erro?.codigo).toBe("erro");
 });
 
@@ -53,6 +63,16 @@ test("Deve retornar null com texto maior que o tamanho mínimo", () => {
 
 test("Deve retornar erro com texto menor que o tamanho mínimo", () => {
   const erro = Validador.tamanhoMaiorQue("bom", 4, "erro");
+  expect(erro?.codigo).toBe("erro");
+});
+
+test("Deve retornar null com texto maior ou igual que o tamanho mínimo", () => {
+  const erro = Validador.tamanhoMaiorQueOuIgual("teste", 5, "erro");
+  expect(erro).toBeNull();
+});
+
+test("Deve retornar erro com texto menor ou igual que tamanho mínimo", () => {
+  const erro = Validador.tamanhoMaiorQueOuIgual("Bom dia", 8, "erro");
   expect(erro?.codigo).toBe("erro");
 });
 
