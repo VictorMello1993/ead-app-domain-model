@@ -14,6 +14,11 @@ export class AulaBuilder {
     });
   }
 
+  static criarListaCom(qte: number): Aula[] {
+    const aula = (index: number) => AulaBuilder.criar().comOrdem(index + 1).agora();
+    return Array.from({ length: qte }).map((_, index) => aula(index));
+  }
+
   comId(id: string): AulaBuilder {
     this.props.id = id;
     return this;
