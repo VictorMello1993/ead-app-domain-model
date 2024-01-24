@@ -6,6 +6,9 @@ module.exports = {
   moduleNameMapper: {
     "^@/tests/(.*)": "<rootDir>/tests/$1",
     "^@/(.*)$": "<rootDir>/src/$1"
-  }
-  // setupFiles: ["<rootDir>/tests/.env.ts"]
+  },
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "<rootDir>/src/**/*.ts"
+  ]
 };
