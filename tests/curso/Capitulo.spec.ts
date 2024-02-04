@@ -114,17 +114,35 @@ test("Deve adicionar aula no início do capítulo", () => {
   expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
 });
 
-test("Deve mover uma aula da posição 0 para posição 2", () => {
-  const capitulo = CapituloBuilder.criar(3).agora();
-  const novoCapitulo = capitulo.moverAula(capitulo.aulas[0], 2);
-
-  console.log(capitulo.aulas);
-  console.log(novoCapitulo.aulas);
-});
-
 test("Deve remover uma aula", () => {
   const capitulo = CapituloBuilder.criar(5).agora();
   const segundaAula = capitulo.aulas[1];
   const novoCapitulo = capitulo.removerAula(segundaAula);
   expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+});
+
+test("Deve mover aula uma posição para baixo", () => {
+  const capitulo = CapituloBuilder.criar().agora();
+  const segundaAula = capitulo.aulas[1];
+  const novoCapitulo = capitulo.moverAulaParaBaixo(segundaAula);
+  expect(novoCapitulo.aulas[2].nome.completo).toBe(segundaAula.nome.completo);
+});
+
+test("Deve mover aula uma posição para cima", () => {
+  const capitulo = CapituloBuilder.criar().agora();
+  const segundaAula = capitulo.aulas[1];
+  const novoCapitulo = capitulo.moverAulaParaCima(segundaAula);
+  expect(novoCapitulo.aulas[0].nome.completo).toBe(segundaAula.nome.completo);
+});
+
+test("Deve ignorar quando mover primeira aula para cima", () => {
+  const capitulo = CapituloBuilder.criar().agora();
+  const novoCapitulo = capitulo.moverAulaParaCima(capitulo.primeiraAulaDoCapitulo);
+  expect(novoCapitulo).toBe(capitulo);
+});
+
+test("Deve ignorar quando mover última aula para baixo", () => {
+  const capitulo = CapituloBuilder.criar().agora();
+  const novoCapitulo = capitulo.moverAulaParaBaixo(capitulo.ultimaAulaDoCapitulo);
+  expect(novoCapitulo).toBe(capitulo);
 });

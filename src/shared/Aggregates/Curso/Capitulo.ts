@@ -74,6 +74,18 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
     return this.removerAula(aulaSelecionada).adicionarAula(aulaSelecionada, posicao);
   }
 
+  moverAulaParaCima(aulaSelecionada: Aula): Capitulo {
+    const posicaoAtual = this.aulas.findIndex(aula => aula.igual(aulaSelecionada));
+    const primeiraPosicao = posicaoAtual === 0;
+    return primeiraPosicao ? this : this.moverAula(aulaSelecionada, posicaoAtual - 1);
+  }
+
+  moverAulaParaBaixo(aulaSelecionada: Aula): Capitulo {
+    const posicaoAtual = this.aulas.findIndex(aula => aula.igual(aulaSelecionada));
+    const ultimaPosicao = posicaoAtual === this.quantidadeAulasDoCapitulo - 1;
+    return ultimaPosicao ? this : this.moverAula(aulaSelecionada, posicaoAtual + 1);
+  }
+
   private static ordenarAulas(aulasProps: AulaProps[]): AulaProps[] {
     const aulas = aulasProps.map(props => new Aula(props));
     const aulasOrdenadas = aulas.sort(OrdemVO.ordenar);
