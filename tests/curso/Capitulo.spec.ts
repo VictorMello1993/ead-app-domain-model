@@ -93,3 +93,30 @@ test("Deve retornar primeira e última aula de um capítulo", () => {
   expect(capitulo.ultimaAulaDoCapitulo.nome.completo).toBe("Aula #3");
   expect(capitulo.ultimaAulaDoCapitulo.ordem.valor).toBe(3);
 });
+
+test("Deve adicionar aula", () => {
+  const capitulo = CapituloBuilder.criar(3).agora();
+  const novaAula = AulaBuilder.criar("Aula #4").agora();
+  const novoCapitulo = capitulo.adicionarAula(novaAula);
+
+  expect(novoCapitulo.ultimaAulaDoCapitulo.nome.completo).toBe(novaAula.nome.completo);
+  expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+});
+
+test("Deve adicionar aula no início do capítulo", () => {
+  const capitulo = CapituloBuilder.criar(3).agora();
+  const novaAula = AulaBuilder.criar("Bem-vindo").agora();
+  const novoCapitulo = capitulo.adicionarAula(novaAula, 0);
+
+  console.log(novoCapitulo.aulas);
+
+  expect(novoCapitulo.primeiraAulaDoCapitulo.nome.completo).toBe(novaAula.nome.completo);
+  expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+});
+
+test("Deve remover uma aula", () => {
+  const capitulo = CapituloBuilder.criar(5).agora();
+  const segundaAula = capitulo.aulas[1];
+  const novoCapitulo = capitulo.removerAula(segundaAula);
+  expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+});
