@@ -46,7 +46,7 @@ test("Deve ordenar corretamente as aulas de um capítulo", () => {
   expect(capitulo.aulas[2].ordem.valor).toBe(3);
 });
 
-test("Deve ordenar corretamente as aulas de um capítulo via props", () => {
+test("Deve ordenar corretamente as aulas de um capítulo via props inicialmente sem aulas", () => {
   const aulas = [
     AulaBuilder.criar("Aula #1").comDuracao(63).semOrdem().agora(),
     AulaBuilder.criar("Aula #2").comDuracao(1007).semOrdem().agora(),
@@ -58,4 +58,38 @@ test("Deve ordenar corretamente as aulas de um capítulo via props", () => {
   expect(capitulo.props.aulas![0].ordem).toBe(1);
   expect(capitulo.props.aulas![1].ordem).toBe(2);
   expect(capitulo.props.aulas![2].ordem).toBe(3);
+});
+
+test("Deve ordenar corretamente as aulas de um capítulo via props com ordens inconsistentes", () => {
+  const aulas = [
+    AulaBuilder.criar("Aula #1").comDuracao(63).comOrdem(37).agora(),
+    AulaBuilder.criar("Aula #2").comDuracao(1007).comOrdem(2).agora(),
+    AulaBuilder.criar("Aula #3").comDuracao(3784).comOrdem(4).agora()
+  ];
+
+  const capitulo = CapituloBuilder.criar().comAulas(aulas).agora();
+
+  expect(capitulo.props.aulas![0].ordem).toBe(1);
+  expect(capitulo.props.aulas![1].ordem).toBe(2);
+  expect(capitulo.props.aulas![2].ordem).toBe(3);
+});
+
+test("Deve retornar a quantidade de aulas de um capítulo", () => {
+  const capitulo = CapituloBuilder.criar(15).agora();
+  expect(capitulo.quantidadeAulasDoCapitulo).toBe(15);
+});
+
+test("Deve retornar primeira e última aula de um capítulo", () => {
+  const aulas = [
+    AulaBuilder.criar("Aula #2").comDuracao(1007).comOrdem(2).agora(),
+    AulaBuilder.criar("Aula #3").comDuracao(3784).comOrdem(3).agora(),
+    AulaBuilder.criar("Aula #1").comDuracao(63).comOrdem(1).agora()
+  ];
+
+  const capitulo = CapituloBuilder.criar().comAulas(aulas).agora();
+
+  expect(capitulo.primeiraAulaDoCapitulo.nome.completo).toBe("Aula #1");
+  expect(capitulo.primeiraAulaDoCapitulo.ordem.valor).toBe(1);
+  expect(capitulo.ultimaAulaDoCapitulo.nome.completo).toBe("Aula #3");
+  expect(capitulo.ultimaAulaDoCapitulo.ordem.valor).toBe(3);
 });

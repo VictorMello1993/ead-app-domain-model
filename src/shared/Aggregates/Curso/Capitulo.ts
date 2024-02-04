@@ -25,7 +25,7 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
     this.nome = new NomeSimplesVO(props.nome!, 3, 50);
     this.ordem = new OrdemVO(props.ordem);
 
-    if (!this.props.aulas?.length) {
+    if (!this.props.aulas!.length) {
       ErroValidacao.lancar(Erros.CAPITULO_SEM_AULAS);
     }
 
