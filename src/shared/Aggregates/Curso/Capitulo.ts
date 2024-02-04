@@ -70,6 +70,10 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
     return this.clone({ aulas });
   }
 
+  moverAula(aulaSelecionada: Aula, posicao: number): Capitulo {
+    return this.removerAula(aulaSelecionada).adicionarAula(aulaSelecionada, posicao);
+  }
+
   private static ordenarAulas(aulasProps: AulaProps[]): AulaProps[] {
     const aulas = aulasProps.map(props => new Aula(props));
     const aulasOrdenadas = aulas.sort(OrdemVO.ordenar);

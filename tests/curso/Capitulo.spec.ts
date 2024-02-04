@@ -114,6 +114,14 @@ test("Deve adicionar aula no início do capítulo", () => {
   expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
 });
 
+test("Deve mover uma aula da posição 0 para posição 2", () => {
+  const capitulo = CapituloBuilder.criar(3).agora();
+  const novoCapitulo = capitulo.moverAula(capitulo.aulas[0], 2);
+
+  console.log(capitulo.aulas);
+  console.log(novoCapitulo.aulas);
+});
+
 test("Deve remover uma aula", () => {
   const capitulo = CapituloBuilder.criar(5).agora();
   const segundaAula = capitulo.aulas[1];
