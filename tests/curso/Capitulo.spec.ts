@@ -107,9 +107,6 @@ test("Deve adicionar aula no início do capítulo", () => {
   const capitulo = CapituloBuilder.criar(3).agora();
   const novaAula = AulaBuilder.criar("Bem-vindo").agora();
   const novoCapitulo = capitulo.adicionarAula(novaAula, 0);
-
-  console.log(novoCapitulo.aulas);
-
   expect(novoCapitulo.primeiraAulaDoCapitulo.nome.completo).toBe(novaAula.nome.completo);
   expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
 });
