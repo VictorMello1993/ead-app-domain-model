@@ -60,13 +60,13 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
       ? [...this.aulas.slice(0, posicao), aula, ...this.aulas.slice(posicao)]
       : [...this.aulas, aula];
 
-    const aulas = Capitulo.reordenar(novasAulas).map(aula => aula.props);
+    const aulas = Capitulo.reordenarAulas(novasAulas).map(aula => aula.props);
     return this.clone({ aulas });
   }
 
   removerAula(aulaSelecionada: Aula): Capitulo {
     const outrasAulas = this.aulas.filter(aula => aula.diferente(aulaSelecionada));
-    const aulas = Capitulo.reordenar(outrasAulas).map(aula => aula.props);
+    const aulas = Capitulo.reordenarAulas(outrasAulas).map(aula => aula.props);
     return this.clone({ aulas });
   }
 
@@ -89,10 +89,10 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
   private static ordenarAulas(aulasProps: AulaProps[]): AulaProps[] {
     const aulas = aulasProps.map(props => new Aula(props));
     const aulasOrdenadas = aulas.sort(OrdemVO.ordenar);
-    return Capitulo.reordenar(aulasOrdenadas).map(aula => aula.props);
+    return Capitulo.reordenarAulas(aulasOrdenadas).map(aula => aula.props);
   }
 
-  private static reordenar(aulas: Aula[]): Aula[] {
+  private static reordenarAulas(aulas: Aula[]): Aula[] {
     return aulas.map((aula, index) => aula.clone({ ordem: index + 1 }));
   }
 }
