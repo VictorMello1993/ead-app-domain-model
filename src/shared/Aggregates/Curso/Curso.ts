@@ -73,4 +73,47 @@ export class Curso extends Entidade<Curso, CursoProps> {
   private static reordenarAulasCapitulos(capitulos: Capitulo[]): Capitulo[] {
     return capitulos.map((capitulo, index) => capitulo.clone({ ordem: index + 1 }));
   }
+
+  get quantidadeDeCapitulos(): number {
+    return this.capitulos.length;
+  }
+
+  get primeiroCapitulo() {
+    return this.capitulos[0];
+  }
+
+  get ultimoCapitulo() {
+    return this.capitulos[this.quantidadeDeCapitulos - 1];
+  }
+
+  adicionarCapitulo(capitulo: Capitulo, posicao?: number): Curso {
+    const novosCapitulos = posicao !== undefined
+      ? [...this.capitulos.slice(0, posicao), capitulo, ...this.capitulos.slice(posicao)]
+      : [...this.capitulos, capitulo];
+
+    const capitulos = Curso.reordenarAulasCapitulos(novosCapitulos).map(capitulo => capitulo.props);
+    return this.clone({ capitulos });
+  }
+
+  removerCapitulo(capituloSelecionado: Capitulo): Curso {
+    const outrosCapitulos = this.capitulos.filter(capitulo => capitulo.diferente(capituloSelecionado));
+    const capitulos = Curso.reordenarAulasCapitulos(outrosCapitulos).map(capitulo => capitulo.props);
+    return this.clone({ capitulos });
+  }
+
+  moverCapitulo(capituloSelecionado: Capitulo, posicao: number): Curso {
+    return this.removerCapitulo(capituloSelecionado).adicionarCapitulo(capituloSelecionado, posicao);
+  }
+
+  moverCapituloParaCima(capituloSelecionado: Capitulo): Curso {
+    const posicaoAtual = this.capitulos.findIndex(aula => aula.igual(capituloSelecionado));
+    const primeiraPosicao = posicaoAtual === 0;
+    return primeiraPosicao ? this : this.moverCapitulo(capituloSelecionado, posicaoAtual - 1);
+  }
+
+  moverCapituloParaBaixo(capituloSelecionado: Capitulo): Curso {
+    const posicaoAtual = this.capitulos.findIndex(aula => aula.igual(capituloSelecionado));
+    const ultimaPosicao = posicaoAtual === this.quantidadeDeCapitulos - 1;
+    return ultimaPosicao ? this : this.moverCapitulo(capituloSelecionado, posicaoAtual + 1);
+  }
 }

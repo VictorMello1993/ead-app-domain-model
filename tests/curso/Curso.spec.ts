@@ -121,3 +121,50 @@ test("Deve lançar erro ao criar curso com capítulo sem aulas", () => {
     ]
   })).toThrow(Erros.CAPITULO_SEM_AULAS);
 });
+
+test("Deve ser possível adicionar capítulo dentro do curso", () => {
+  const curso = CursoBuilder.criar().agora();
+  const novoCapitulo = CapituloBuilder.criar().agora();
+  const novoCurso = curso.adicionarCapitulo(novoCapitulo);
+  expect(novoCurso.ultimoCapitulo.nome.completo).toBe(novoCapitulo.nome.completo);
+});
+
+test("Deve adicionar capítulo no início do curso", () => {
+  const curso = CursoBuilder.criar().agora();
+  const novoCapitulo = CapituloBuilder.criar().agora();
+  const novoCurso = curso.adicionarCapitulo(novoCapitulo, 0);
+  expect(novoCurso.primeiroCapitulo.nome.completo).toBe(novoCapitulo.nome.completo);
+});
+
+test("Deve remover um capítulo do curso", () => {
+  const curso = CursoBuilder.criar(5).agora();
+  const segundoCapitulo = curso.capitulos[1];
+  const novoCurso = curso.removerCapitulo(segundoCapitulo);
+  expect(novoCurso.quantidadeDeCapitulos).toBe(4);
+});
+
+test("Deve mover capítulo uma posição para baixo", () => {
+  const curso = CursoBuilder.criar().agora();
+  const segundoCapitulo = curso.capitulos[1];
+  const novocurso = curso.moverCapituloParaBaixo(segundoCapitulo);
+  expect(novocurso.capitulos[2].nome.completo).toBe(segundoCapitulo.nome.completo);
+});
+
+test("Deve mover capítulo uma posição para cima", () => {
+  const curso = CursoBuilder.criar().agora();
+  const segundoCapitulo = curso.capitulos[1];
+  const novocurso = curso.moverCapituloParaCima(segundoCapitulo);
+  expect(novocurso.capitulos[0].nome.completo).toBe(segundoCapitulo.nome.completo);
+});
+
+test("Deve ignorar quando mover primeiro capítulo para cima", () => {
+  const curso = CursoBuilder.criar().agora();
+  const novocurso = curso.moverCapituloParaCima(curso.primeiroCapitulo);
+  expect(novocurso).toBe(curso);
+});
+
+test("Deve ignorar quando mover último capítulo para baixo", () => {
+  const curso = CursoBuilder.criar().agora();
+  const novocurso = curso.moverCapituloParaBaixo(curso.ultimoCapitulo);
+  expect(novocurso).toBe(curso);
+});
