@@ -5,6 +5,7 @@ import { OrdemVO } from "@/shared/ValueObject/OrdemVO";
 import { Capitulo, CapituloProps } from "./Capitulo";
 import { ErroValidacao } from "@/errors/ErroValidacao";
 import Erros from "@/constants/Erros";
+import { Aula } from "./Aula";
 
 export interface CursoProps extends EntidadeProps {
   nome?: string;
@@ -86,12 +87,24 @@ export class Curso extends Entidade<Curso, CursoProps> {
     return this.capitulos[this.quantidadeDeCapitulos - 1];
   }
 
+  get aulas(): Aula[] {
+    return this.capitulos.flatMap(capitulo => capitulo.aulas);
+  }
+
   adicionarCapitulo(capitulo: Capitulo, posicao?: number): Curso {
     const novosCapitulos = posicao !== undefined
       ? [...this.capitulos.slice(0, posicao), capitulo, ...this.capitulos.slice(posicao)]
       : [...this.capitulos, capitulo];
 
     const capitulos = Curso.reordenarAulasCapitulos(novosCapitulos).map(capitulo => capitulo.props);
+    return this.clone({ capitulos });
+  }
+
+  atualizarAula(aulaSelecionada: Aula): Curso {
+    const capitulos = this.capitulos.map(capitulo => {
+      const aulas = capitulo.aulas.map(aula => aula.igual(aulaSelecionada) ? aulaSelecionada : aula);
+      return { ...capitulo.props, aulas: aulas.map(aula => aula.props) } as CapituloProps;
+    });
     return this.clone({ capitulos });
   }
 

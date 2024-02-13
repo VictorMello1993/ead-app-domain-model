@@ -168,3 +168,14 @@ test("Deve ignorar quando mover último capítulo para baixo", () => {
   const novocurso = curso.moverCapituloParaBaixo(curso.ultimoCapitulo);
   expect(novocurso).toBe(curso);
 });
+
+test("Deve atualizar aula no curso", () => {
+  const curso = CursoBuilder.criar().agora();
+
+  // atualizando a duração da primeira aula para 3h (10800 seg)
+  const novaAula = curso.aulas[0].clone({ duracao: 10800 });
+  const novoCurso = curso.atualizarAula(novaAula);
+
+  expect(novoCurso.primeiroCapitulo.primeiraAulaDoCapitulo.nome.completo).toBe(novaAula.nome.completo);
+  expect(novoCurso.primeiroCapitulo.primeiraAulaDoCapitulo.duracao.segundos).toBe(novaAula.duracao.segundos);
+});
