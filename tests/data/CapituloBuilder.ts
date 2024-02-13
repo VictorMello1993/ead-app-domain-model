@@ -15,6 +15,11 @@ export class CapituloBuilder {
     });
   }
 
+  static criarListaCom(qteCapitulos: number, qteAulas: number): Capitulo[] {
+    const capitulo = (index: number) => CapituloBuilder.criar(qteAulas).comOrdem(index + 1).agora();
+    return Array.from({ length: qteCapitulos }).map((_, index) => capitulo(index));
+  }
+
   comId(id: string): CapituloBuilder {
     this.props.id = id;
     return this;

@@ -1,5 +1,5 @@
 import { EmailVO } from "@/shared/ValueObject/EmailVO";
-import Erros from "../../../src/constants/Erros";
+import Erros from "@/constants/Erros";
 
 test("Deve criar um e-mail válido", () => {
   const email = new EmailVO("fulano@teste.com.br");

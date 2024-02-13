@@ -43,7 +43,7 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
     }, new DuracaoVO(0));
   }
 
-  get quantidadeAulasDoCapitulo(): number {
+  get quantidadeDeAulasDoCapitulo(): number {
     return this.aulas.length;
   }
 
@@ -52,7 +52,7 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
   }
 
   get ultimaAulaDoCapitulo() {
-    return this.aulas[this.quantidadeAulasDoCapitulo - 1];
+    return this.aulas[this.quantidadeDeAulasDoCapitulo - 1];
   }
 
   adicionarAula(aula: Aula, posicao?: number): Capitulo {
@@ -82,7 +82,7 @@ export class Capitulo extends Entidade<Capitulo, CapituloProps> {
 
   moverAulaParaBaixo(aulaSelecionada: Aula): Capitulo {
     const posicaoAtual = this.aulas.findIndex(aula => aula.igual(aulaSelecionada));
-    const ultimaPosicao = posicaoAtual === this.quantidadeAulasDoCapitulo - 1;
+    const ultimaPosicao = posicaoAtual === this.quantidadeDeAulasDoCapitulo - 1;
     return ultimaPosicao ? this : this.moverAula(aulaSelecionada, posicaoAtual + 1);
   }
 

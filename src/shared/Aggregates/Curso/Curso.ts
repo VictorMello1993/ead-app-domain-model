@@ -1,15 +1,17 @@
-import { Entidade, EntidadeProps } from "../../Entities/Entidade";
-import { DuracaoVO } from "../../ValueObject/DuracaoVO";
-import { NomeSimplesVO } from "../../ValueObject/NomeSimplesVO";
-import { OrdemVO } from "../../ValueObject/OrdemVO";
+import { Entidade, EntidadeProps } from "@/shared/Entities/Entidade";
+import { DuracaoVO } from "@/shared/ValueObject/DuracaoVO";
+import { NomeSimplesVO } from "@/shared/ValueObject/NomeSimplesVO";
+import { OrdemVO } from "@/shared/ValueObject/OrdemVO";
 import { Capitulo, CapituloProps } from "./Capitulo";
+import { ErroValidacao } from "@/errors/ErroValidacao";
+import Erros from "@/constants/Erros";
 
-interface CursoProps extends EntidadeProps {
+export interface CursoProps extends EntidadeProps {
   nome?: string;
   data?: Date;
   capitulos?: CapituloProps[]
   duracao?: number
-  quantidadeAulas?: number
+  quantidadeDeAulas?: number
 }
 
 export class Curso extends Entidade<Curso, CursoProps> {
@@ -31,20 +33,30 @@ export class Curso extends Entidade<Curso, CursoProps> {
     this.nome = new NomeSimplesVO(this.props.nome!, 3, 50);
     this.capitulos = this.props.capitulos!.map(capitulo => new Capitulo(capitulo));
     this.duracao = new DuracaoVO(this.props.duracao);
-    this.quantidadeDeAulas = this.props.quantidadeAulas!;
+    this.quantidadeDeAulas = this.props.quantidadeDeAulas!;
+
+    const { duracao, quantidadeDeAulas } = this.props;
+
+    if (duracao! <= 0) {
+      ErroValidacao.lancar(Erros.CURSO_SEM_DURACAO, duracao);
+    }
+
+    if (quantidadeDeAulas! <= 0) {
+      ErroValidacao.lancar(Erros.CURSO_SEM_AULAS, quantidadeDeAulas);
+    }
   }
 
   private static calcularNumerosDoCurso(props: CursoProps) {
     if (!props.capitulos) {
       return {
         duracao: props.duracao ?? 0,
-        quantidadeDeAulas: props.quantidadeAulas ?? 0
+        quantidadeDeAulas: props.quantidadeDeAulas ?? 0
       };
     }
 
     const capitulos = props.capitulos.map(props => new Capitulo(props));
     const duracao = capitulos.reduce((total, capitulo) => total + capitulo.duracao.segundos, 0);
-    const quantidadeDeAulas = capitulos.reduce((total, capitulo) => total + capitulo.quantidadeAulasDoCapitulo, 0);
+    const quantidadeDeAulas = capitulos.reduce((total, capitulo) => total + capitulo.quantidadeDeAulasDoCapitulo, 0);
 
     return {
       duracao,

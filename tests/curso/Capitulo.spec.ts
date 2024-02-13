@@ -76,7 +76,7 @@ test("Deve ordenar corretamente as aulas de um capítulo via props com ordens in
 
 test("Deve retornar a quantidade de aulas de um capítulo", () => {
   const capitulo = CapituloBuilder.criar(15).agora();
-  expect(capitulo.quantidadeAulasDoCapitulo).toBe(15);
+  expect(capitulo.quantidadeDeAulasDoCapitulo).toBe(15);
 });
 
 test("Deve retornar primeira e última aula de um capítulo", () => {
@@ -100,7 +100,7 @@ test("Deve adicionar aula", () => {
   const novoCapitulo = capitulo.adicionarAula(novaAula);
 
   expect(novoCapitulo.ultimaAulaDoCapitulo.nome.completo).toBe(novaAula.nome.completo);
-  expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+  expect(novoCapitulo.quantidadeDeAulasDoCapitulo).toBe(4);
 });
 
 test("Deve adicionar aula no início do capítulo", () => {
@@ -108,14 +108,14 @@ test("Deve adicionar aula no início do capítulo", () => {
   const novaAula = AulaBuilder.criar("Bem-vindo").agora();
   const novoCapitulo = capitulo.adicionarAula(novaAula, 0);
   expect(novoCapitulo.primeiraAulaDoCapitulo.nome.completo).toBe(novaAula.nome.completo);
-  expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+  expect(novoCapitulo.quantidadeDeAulasDoCapitulo).toBe(4);
 });
 
 test("Deve remover uma aula", () => {
   const capitulo = CapituloBuilder.criar(5).agora();
   const segundaAula = capitulo.aulas[1];
   const novoCapitulo = capitulo.removerAula(segundaAula);
-  expect(novoCapitulo.quantidadeAulasDoCapitulo).toBe(4);
+  expect(novoCapitulo.quantidadeDeAulasDoCapitulo).toBe(4);
 });
 
 test("Deve mover aula uma posição para baixo", () => {
