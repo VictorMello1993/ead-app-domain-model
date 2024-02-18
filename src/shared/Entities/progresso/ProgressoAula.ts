@@ -35,11 +35,11 @@ export class ProgressoAula extends Entidade<ProgressoAula, ProgressoAulaProps> {
   }
 
   get iniciado(): boolean {
-    return this.dataInicio !== null;
+    return this.dataInicio !== undefined;
   }
 
   get concluido(): boolean {
-    return this.dataConclusao !== null;
+    return this.dataConclusao !== undefined;
   }
 
   iniciar(): ProgressoAula {
