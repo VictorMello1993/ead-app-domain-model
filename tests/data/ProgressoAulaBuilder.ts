@@ -19,6 +19,10 @@ export class ProgressoAulaBuilder {
     });
   }
 
+  static criarListaCom(qtde: number = 10): ProgressoAula[] {
+    return Array.from({ length: qtde }).map(() => ProgressoAulaBuilder.criar().agora());
+  }
+
   comId(id: string): ProgressoAulaBuilder {
     this.props.id = id;
     return this;
