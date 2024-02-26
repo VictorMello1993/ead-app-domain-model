@@ -2,7 +2,7 @@ import Erros from "@/constants/Erros";
 import { ProgressoCursoBuilder } from "@/tests/data/ProgressoCursoBuilder";
 import { ProgressoAulaBuilder } from "@/tests/data/ProgressoAulaBuilder";
 import { ProgressoAulaProps } from "@/shared/Entities/progresso/ProgressoAula";
-import { ProgressoCurso } from "../../../../src/shared/Entities/progresso/ProgressoCurso";
+import { faker } from "@faker-js/faker";
 
 const builder = () => ProgressoAulaBuilder.criar().naoIniciado().naoConcluido();
 
@@ -67,7 +67,7 @@ test("Deve concluir a aula atual", () => {
   expect(progresso.aulas[1].concluido).toBeFalsy();
 });
 
-test("Deve concluir curso", () => {
+test("Deve concluir curso aula por aula", () => {
   const progresso = ProgressoCursoBuilder
     .criar()
     .comAulas(aulas)
@@ -85,4 +85,66 @@ test("Deve concluir curso", () => {
 
   expect(progressoConcluido.percentualAssistido).toBe(100);
   expect(progressoConcluido.concluido).toBeTruthy();
+});
+
+test("Deve concluir curso", () => {
+  const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).agora();
+
+  expect(progresso.percentualAssistido).toBe(0);
+  expect(progresso.concluido).toBeFalsy();
+
+  const progressoConcluido = progresso.concluirCurso();
+
+  expect(progressoConcluido.percentualAssistido).toBe(100);
+  expect(progressoConcluido.concluido).toBeTruthy();
+});
+
+test("Deve retornar o mesmo curso ao tentar concluir mais de uma vez", () => {
+  const progresso = ProgressoCursoBuilder
+    .criar()
+    .comAulas(aulas)
+    .agora()
+    .concluirCurso();
+
+  expect(progresso.concluirAulaAtual()).toBe(progresso);
+  expect(progresso.concluirCurso()).toBe(progresso);
+});
+
+test("Deve selecionar progresso da aula por id", () => {
+  const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).agora();
+  const selecionado = progresso.progressoAula(aulas[2].id!); // Selecionando terceiro progresso da aula
+
+  console.log(selecionado);
+
+  expect(selecionado!.id.valor).toBe(aulas[2].id!);
+  expect(progresso.progressoAula("")).toBeUndefined();
+});
+
+test("Deve criar um progresso com data indefinida", () => {
+  const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).semData().agora();
+  expect(progresso.data).toBeDefined();
+  expect(progresso.data.getTime()).toBeLessThan(Date.now());
+  expect((Date.now() - progresso.data.getTime())).toBeLessThanOrEqual(1);
+});
+
+test("Deve criar progresso concluindo uma aula selecionada", () => {
+  const progresso = ProgressoCursoBuilder
+    .criar()
+    .comAulas(aulas)
+    .comAulaSelecionadaId(aulas[4].id!) // Selecionando 5ª aula
+    .agora()
+    .concluirAulaAtual();
+
+  expect(progresso.duracaoAssistida.segundos).toBe(500);
+});
+
+test("Deve criar progresso sem aula selecionada", () => {
+  const progresso = ProgressoCursoBuilder
+    .criar()
+    .comAulas(aulas)
+    .semAulaSelecionadaId()
+    .agora() // Sem aula selecionada, por padrão irá obter a primeira aula
+    .concluirAulaAtual();
+
+  expect(progresso.duracaoAssistida.segundos).toBe(100);
 });

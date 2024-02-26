@@ -50,6 +50,15 @@ export class ProgressoCurso extends Entidade<ProgressoCurso, ProgressoCursoProps
     return this.clone({ aulas, data: new Date() });
   }
 
+  concluirCurso(): ProgressoCurso {
+    if (this.concluido) {
+      return this;
+    }
+
+    const aulasConcluidas = this.aulas.map(aula => aula.concluir().props);
+    return this.clone({ aulas: aulasConcluidas, data: new Date() });
+  }
+
   zerarAula(aulaId: string): ProgressoCurso {
     const aulas = this.aulas.map(aula => aula.id.valor === aulaId ? aula.zerar().props : aula.props);
     return this.clone({ aulas, data: new Date() });
