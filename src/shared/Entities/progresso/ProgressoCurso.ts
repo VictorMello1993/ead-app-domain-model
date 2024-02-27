@@ -36,6 +36,33 @@ export class ProgressoCurso extends Entidade<ProgressoCurso, ProgressoCursoProps
     this.aulaSelecionada = this.aulas.find(aula => aula.id.valor === props.aulaSelecionadaId) ?? this.aulas[0];
   }
 
+  riscoDeFraude(): number {
+    /* Curso muito pequeno, com pouquíssimas aulas fica quase impossível de determinar
+      algum risco de fraude */
+    if (this.aulas.length < 2) {
+      return 0;
+    }
+
+    const LIMITE_FRAUDE_PERCENTUAL = 0.2;
+    const NUMERO_INTERVALOS_ENTRE_AULAS = this.aulas.length - 1;
+
+    const total = this.aulas.reduce((total, aula, index) => {
+      const dataInicioAulaAtual = aula.dataInicio;
+      const dataInicioProximaAula = this.aulas[index + 1]?.dataInicio;
+
+      if (!dataInicioAulaAtual || !dataInicioProximaAula) {
+        return total;
+      }
+
+      const intervaloSuspeitoMilis = aula.duracao.segundos * LIMITE_FRAUDE_PERCENTUAL * 1000;
+      const intervaloRealMilis = Math.abs(dataInicioAulaAtual.getTime() - dataInicioProximaAula.getTime());
+
+      return total + (intervaloRealMilis < intervaloSuspeitoMilis ? 1 : 0);
+    }, 0);
+
+    return Math.floor((total / NUMERO_INTERVALOS_ENTRE_AULAS) * 100);
+  }
+
   iniciarAula(aulaId: string): ProgressoCurso {
     const aulas = this.aulas.map(aula => aula.id.valor === aulaId ? aula.iniciar().props : aula.props);
     return this.clone({ aulas, data: new Date() });
