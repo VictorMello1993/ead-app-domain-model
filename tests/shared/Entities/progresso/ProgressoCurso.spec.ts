@@ -178,3 +178,37 @@ test('Deve calcular como risco de fraude como 0%', () => {
   expect(progresso.riscoDeFraude()).toBe(0);
 
 })
+
+test('Deve calcular o risco de fraude como 25%', () => {
+  const aulas = [
+    aulaRisco(7, 3),  //Data início: 10/01/24 09:07:00 -> Duração: 180 segundos -> 20% de 180 = 36 segundos
+    aulaRisco(8, 5),  //Data início: 10/01/24 09:08:00 -> Duração: 300 segundos -> 20% de 300 = 60 segundos
+    aulaRisco(10, 7), //Data início: 10/01/24 09:10:00 -> Duração: 420 segundos -> 20% de 420 = 84 segundos
+    aulaRisco(11, 2), //Data início: 10/01/24 09:11:00 -> Duração: 60 segundos  -> 20% de 60  = 12 segundos
+    aulaRisco(13, 1), //Data início: 10/01/24 09:13:00 -> Duração: 60 segundos  -> 20% de 60  = 12 segundos
+  ];
+
+  //OBS: a terceira aula entrou no intervalo suspeito, pois assistiu num tempo menor em relação à quarta aula
+  //     Ou seja, 84 seg (intervalo suspeito) > 60 seg (intervalo real)
+
+  const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).agora();  
+  expect(progresso.riscoDeFraude()).toBe(25);
+})
+
+test('Deve calcular o risco de fraude como 100%', () => {
+  const aulas = [
+    aulaRisco(7, 8),  
+    aulaRisco(8, 12), 
+    aulaRisco(9, 17), 
+    aulaRisco(10, 23),
+    aulaRisco(11, 9), 
+  ];  
+
+  const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).agora();  
+  expect(progresso.riscoDeFraude()).toBe(100);
+})
+
+test('Deve calcular como risco de fraude como 0% se curso possui apenas uma aula', () => {
+  const progresso = ProgressoCursoBuilder.criar(1).agora().concluirCurso()
+  expect(progresso.riscoDeFraude()).toBe(0)
+})
