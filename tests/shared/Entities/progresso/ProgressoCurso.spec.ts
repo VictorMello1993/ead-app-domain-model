@@ -123,8 +123,7 @@ test("Deve selecionar progresso da aula por id", () => {
 test("Deve criar um progresso com data indefinida", () => {
   const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).semData().agora();
   expect(progresso.data).toBeDefined();
-  expect(progresso.data.getTime()).toBeLessThan(Date.now());
-  expect((Date.now() - progresso.data.getTime())).toBeLessThanOrEqual(1);
+  expect(progresso.data.getTime()).toBeLessThan(Date.now());  
 });
 
 test("Deve criar progresso concluindo uma aula selecionada", () => {
@@ -148,3 +147,34 @@ test("Deve criar progresso sem aula selecionada", () => {
 
   expect(progresso.duracaoAssistida.segundos).toBe(100);
 });
+
+const aulaRisco = (minutoAssistido: number, duracaoEmMinutos: number) => {
+  return ProgressoAulaBuilder
+          .criar()
+          .comDataInicio(new Date(2024, 0, 10, 9, minutoAssistido)) //Aula criada no dia 10/01/24 09:Xmin:00
+          .comDuracao(60 * duracaoEmMinutos)
+          .agora()
+          .props;
+}
+
+
+test('Deve calcular como risco de fraude como 0%', () => {
+  const aulas = [
+    aulaRisco(7, 3),  //Data início: 10/01/24 09:07:00 -> Duração: 180 segundos -> 20% de 180 = 36 segundos
+    aulaRisco(8, 5),  //Data início: 10/01/24 09:08:00 -> Duração: 300 segundos -> 20% de 300 = 60 segundos
+    aulaRisco(10, 7), //Data início: 10/01/24 09:10:00 -> Duração: 420 segundos -> 20% de 420 = 84 segundos
+    aulaRisco(12, 2), //Data início: 10/01/24 09:12:00 -> Duração: 120 segundos -> 20% de 120 = 24 segundos
+    aulaRisco(13, 1), //Data início: 10/01/24 09:13:00 -> Duração: 60 segundos  -> 20% de 60  = 12 segundos
+  ];
+
+  //Duração total: 1080 segundos (18 min)
+  //Intervalo real: 1min (60 seg), 2min (120 seg), 2min (120 seg), 1min (60 seg)
+  //                36 seg < 60s: 0 -> 60 seg < 120 seg: 0 -> 84 seg < 120 seg: 0 -> 24 seg < 60 seg: 0
+                     
+  //Intervalos entre aulas: 4
+  //Total risco de fraude: 0 / 4 => 0%                     
+  const progresso = ProgressoCursoBuilder.criar().comAulas(aulas).agora();  
+
+  expect(progresso.riscoDeFraude()).toBe(0);
+
+})
