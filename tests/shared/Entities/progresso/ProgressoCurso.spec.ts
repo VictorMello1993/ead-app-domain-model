@@ -2,6 +2,9 @@ import Erros from "@/constants/Erros";
 import { ProgressoCursoBuilder } from "@/tests/data/ProgressoCursoBuilder";
 import { ProgressoAulaBuilder } from "@/tests/data/ProgressoAulaBuilder";
 import { ProgressoAulaProps } from "@/shared/Entities/progresso/ProgressoAula";
+import { CursoConcluido } from "@/shared/Events/CursoConcluido";
+import { faker } from "@faker-js/faker";
+import { IdVO } from "@/shared/ValueObject/IdVO";
 
 const builder = () => ProgressoAulaBuilder.criar().naoIniciado().naoConcluido();
 
@@ -243,4 +246,30 @@ test("Deve ignorar a alternância da conclusão de uma aula com id inexistente",
   const progresso = ProgressoCursoBuilder.criar().agora();
   const novoProgresso = progresso.alternarAula("blabla");
   expect(novoProgresso).toBe(progresso);
+});
+
+test("Deve notificar a conclusão do curso", () => {
+  const email = faker.internet.email();
+  const id = IdVO.novo.valor;
+
+  const progresso = ProgressoCursoBuilder.criar().comEmailUsuario(email).comId(id).agora().registrar({
+    eventoOcorreu(evento: CursoConcluido) {
+      expect(evento.idCurso.valor).toBe(id);
+      expect(evento.emailUsuario.valor).toBe(email);
+      expect(evento.data).toBeDefined();
+    }
+  });
+
+  progresso.concluirCurso();
+});
+
+test("Deve ignorar a notificação de conclusão do curso já concluído", () => {
+  const progressoConcluido = ProgressoCursoBuilder.criar().agora().concluirCurso();
+  const progresso = progressoConcluido.registrar({
+    eventoOcorreu(evento: CursoConcluido) {
+      throw new Error("Deve falhar se o método for chamado");
+    }
+  });
+  const aulaId = progresso.aulas[0].id.valor;
+  progresso.zerarAula(aulaId).concluirCurso();
 });
