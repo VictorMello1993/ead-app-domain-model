@@ -20,7 +20,7 @@ Este repositório contém o modelo de domínio para um aplicativo de ensino a di
 
 ## Requisitos não funcionais
 
-* A senha deve estar criptografada
+* A senha deve estar criptografada.
 * O sistema deve ser capaz de detectar fraudes em relação à conclusão das aulas. Se o aluno assistir menos de 20% da duração de uma aula e marcar as aulas subsequentes rapidamente como concluídas, significa que está agindo de maneira suspeita. 
 
 
