@@ -21,8 +21,16 @@ Este repositório contém o modelo de domínio para um aplicativo de ensino a di
 ## Requisitos não funcionais
 
 * A senha deve estar criptografada
-* O sistema deve ser capaz de detectar fraudes em relação à conclusão das aulas. Se o aluno assistir menos de 20% da duração da aula e marcar as aulas subsequentes rapidamente como concluídas, significa que está agindo de maneira suspeita. 
+* O sistema deve ser capaz de detectar fraudes em relação à conclusão das aulas. Se o aluno assistir menos de 20% da duração de uma aula e marcar as aulas subsequentes rapidamente como concluídas, significa que está agindo de maneira suspeita. 
 
+
+## Tecnologias utilizadas
+
+* Typescript
+* Nodejs
+* Jest
+
+Vale ressaltar que o projeto foi desenvolvido sem nenhum framework de terceiros, pois o objetivo é elucidar os conceitos de modelagem de domínio, cujo foco é descrever o domínio do problema, e não definir soluções de tecnologia. Dessa forma, a aplicação foi desenvolvida mediante uso de testes unitários com Jest em vez de desenvolver uma API, por exemplo. Portanto, para cada entidade, VO (Value Object), serviços de domínio e eventos, tudo o que for aderente à modelagem do domínio, devem ser testados para garantir que o sistema está se comportando conforme acordado com o cliente.
 
 
 
