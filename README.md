@@ -1,4 +1,4 @@
-# Modelo de Domínio do Aplicativo EAD
+# 🌐  Modelo de Domínio do Aplicativo EAD
 
 Este repositório contém o modelo de domínio para um aplicativo de ensino a distância (EAD). O modelo de domínio é uma representação visual das entidades principais e de suas interações dentro do sistema. Ele fornece uma visão geral da estrutura e das relações entre os diferentes componentes do aplicativo.
 
@@ -23,8 +23,14 @@ Este repositório contém o modelo de domínio para um aplicativo de ensino a di
 * A senha deve estar criptografada.
 * O sistema deve ser capaz de detectar fraudes em relação à conclusão das aulas. Se o aluno assistir menos de 20% da duração de uma aula e marcar as aulas subsequentes rapidamente como concluídas, significa que está agindo de maneira suspeita. 
 
+## 📚 Conteúdos abordados
+* Modelos Anêmicos
+* Entidade & Objeto de Valor: Conceitos e utilização
+* Serviços de Domínio: Conceitos e utilização
+* Eventos de domínio
+* Padrão de projeto Observer
 
-## Tecnologias utilizadas
+## 🔧 Tecnologias utilizadas
 
 * Typescript
 * Nodejs
