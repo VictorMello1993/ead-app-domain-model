@@ -12,7 +12,7 @@ Este repositório contém o modelo de domínio para um aplicativo de ensino a di
 
 * Os usuários administradores são capazes de cadastrar e atualizar cursos e aulas.
 
-**Visualização de Conteúdo do Curso**
+**Visualização de conteúdo do curso**
 
 * Os alunos matriculados devem poder acessar o conteúdo do curso, assistir às aulas, concluir o curso e receber certificados. 
 * O sistema deve se encarregar de gerar relatórios de desempenho individual do aluno, mostrando seu progresso em horas assistidas e a data de conclusão do curso.
